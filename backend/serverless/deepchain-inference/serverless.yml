@@ -1,0 +1,27 @@
+# backend/serverless/deepchain-inference/serverless.yml
+service: deepchain-inference
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-west-2
+  timeout: 30
+  environment:
+    IPFS_API: ${env:IPFS_API_URL}
+    TF_CPP_MIN_LOG_LEVEL: 2
+
+functions:
+  inference:
+    handler: handler.handler
+    events:
+      - http:
+          path: /inference
+          method: post
+          cors: true
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - 'handler.js'
+    - 'package.json'
+    - 'ipfs.js'

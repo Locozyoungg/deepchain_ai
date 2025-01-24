@@ -1,0 +1,21 @@
+{
+    "defaultNetwork": "ethereum",
+    "networks": {
+        "ethereum": {
+            "url": "${ETH_RPC_URL}",
+            "chainId": 1,
+            "accounts": ["${DEPLOYER_PK}"]
+        },
+        "polygon": {
+            "url": "${POLYGON_RPC_URL}",
+            "chainId": 137,
+            "accounts": ["${DEPLOYER_PK}"]
+        }
+    },
+    "paths": {
+        "sources": "./contracts",
+        "tests": "./test",
+        "cache": "./cache",
+        "artifacts": "./artifacts"
+    }
+}

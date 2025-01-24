@@ -1,0 +1,16 @@
+# backend/graphql/schema.graphql
+type Model @entity {
+  id: ID!                 # Model ID (IPFS CID)
+  owner: Bytes!            # Owner address
+  timestamp: BigInt!       # Registration timestamp
+  isVerified: Boolean!     # ZK verification status
+  verificationCount: Int!  # Number of verifications
+  price: BigInt!           # Price in DEEP tokens
+  uri: String!             # Model storage URI
+}
+
+type Reputation @entity {
+  id: ID!                 # User address
+  score: BigInt!          # Reputation score
+  lastUpdated: BigInt!    # Last update timestamp
+}

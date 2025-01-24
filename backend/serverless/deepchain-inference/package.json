@@ -1,0 +1,9 @@
+{
+    "name": "deepchain-inference",
+    "version": "1.0.0",
+    "dependencies": {
+      "@tensorflow/tfjs-node": "4.2.0",
+      "ipfs-http-client": "56.0.3",
+      "serverless": "3.32.2"
+    }
+  }
