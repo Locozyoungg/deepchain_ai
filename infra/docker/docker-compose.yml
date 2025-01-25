@@ -1,0 +1,67 @@
+# infra/docker/docker-compose.yml
+version: '3.8'
+
+services:
+  blockchain-node:
+    image: ethereum/client-go:latest
+    container_name: deepchain-geth
+    command: --http --http.addr 0.0.0.0 --http.api eth,net,web3
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    volumes:
+      - ./data/chaindata:/root/.ethereum
+    networks:
+      - deepchain-net
+
+  ipfs-node:
+    image: ipfs/kubo:latest
+    container_name: deepchain-ipfs
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ./data/ipfs:/data/ipfs
+    networks:
+      - deepchain-net
+
+  graph-node:
+    image: graphprotocol/graph-node:latest
+    container_name: deepchain-graph
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8020:8020"
+      - "8030:8030"
+      - "8040:8040"
+    environment:
+      postgres_host: postgres
+      postgres_user: graph-node
+      postgres_pass: graph-node
+      postgres_db: graph-node
+      ethereum: mainnet:http://blockchain-node:8545
+      ipfs: ipfs-node:5001
+    depends_on:
+      - blockchain-node
+      - ipfs-node
+    networks:
+      - deepchain-net
+
+  postgres:
+    image: postgres:13-alpine
+    container_name: deepchain-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: graph-node
+      POSTGRES_DB: graph-node
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - deepchain-net
+
+networks:
+  deepchain-net:
+    driver: bridge
